@@ -3,159 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pasteleria</title>
+    <title>Café & Delicias</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header> 
-        <img src="logo.png" alt="Logo Pasteleria" class = "logo">
-        <nav class="menu-navegacion">
-            <ul class="menu-items">
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="menu.html">Menu</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-                <li><a href="acerca.html">Carrito De compras</a></li>
-            </ul>
+    <header class="header">
+        <h1>Pasteleria</h1>
+        <nav class="category-nav">
+            <button class="category-btn active" data-category="starters">
+                <i class="fas fa-cookie"></i> Entradas
+            </button>
+            <button class="category-btn" data-category="snacks">
+                <i class="fas fa-bread-slice"></i> Platos principales
+            </button>
+            <button class="category-btn" data-category="drinks">
+                <i class="fas fa-mug-hot"></i> Bebidas
+            </button>
+            <button class="category-btn" data-category="desserts">
+              <i class="fas fa-mug-hot"></i> Postres
+          </button>
+          
         </nav>
-        <h2 class="presentacion">
-            <p>Deléitate con pasteles artesanales irresistibles,</p>
-            <p> creados con ingredientes frescos y un toque de amor.</p>
-            <p> ¿Un antojo dulce o una celebración especial? </p>
-            <p>¡Tenemos el pastel perfecto para ti! </p></h2>
-        <img src="fondo1.png" atl="Fondo Inicio" class = "fondoInicio">
+        <button class="cart-toggle" aria-label="Ver carrito">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count">0</span>
+        </button>
     </header>
 
-    
-<div class="menu">
-    <section class="menu-entradas">
-        <h2 class="titulo">Nuestro Menú</h2>
-        <div class="menu-items">
-            <div class="menu-item">
-                <img src="entrada1.jpg" alt="Pastel de Chocolate" class="menu-item-img">
-                <h3 class="menu-item-titulo">Pastel de Chocolate</h3>
-                <p class="menu-item-descripcion">Delicioso pastel de chocolate con relleno de fresas y crema batida.</p>
-                <h2 class="menu-item-precio">$200</h2>
-                <button class="add-to-cart">Agregar al carrito</button>
-            </div>
-            <div class="menu-item">
-                <img src="entrada2.jpg" alt="Pastel de Vainilla" class="menu-item-img">
-                <h3 class="menu-item-titulo">Pastel de Vainilla</h3>
-                <p class="menu-item-descripcion">Esponjoso pastel de vainilla con relleno de frutas y crema batida.</p>
-                <h2 class="menu-item-precio">$180</h2>
-                <button class="add-to-cart">Agregar al carrito</button>
-            </div>
-            <div class="menu-item">
-                <img src="entrada3.jpg" alt="Pastel de Zanahoria" class="menu-item-img">
-                <h3 class="menu-item-titulo">Pastel de Zanahoria</h3>
-                <p class="menu-item-descripcion">Jugoso pastel de zanahoria con relleno de nueces y crema de queso.</p>
-                <h2 class="menu-item-precio">$220</h2>
-                <button class="add-to-cart">Agregar al carrito</button>
-            </div>
-        </div>
-    </section>
+    <main>
+        <section class="hero">
+            <h2>Bienvenido a nuestra deliciosa experiencia culinaria</h2>
+            <p>Descubre sabores únicos en cada plato</p>
+        </section>
 
-    <section class="menu-postres-parte1">
-        <h2 class="titulo">Nuestro Menú</h2>
-        <div class="menu-items">
-            <div class="menu-item">
-                <img src="postre1.jpg" alt="Pastel de Chocolate" class="menu-item-img">
-                <h3 class="menu-item-titulo">Pastel de Chocolate</h3>
-                <p class="menu-item-descripcion">Delicioso pastel de chocolate con relleno de fresas y crema batida.</p>
-                <h2 class="menu-item-precio">$200</h2>
-                <button class="add-to-cart">Agregar al carrito</button>
-            </div>
-            <div class="menu-item">
-                <img src="postre2.jpg" alt="Pastel de Vainilla" class="menu-item-img">
-                <h3 class="menu-item-titulo">Pastel de Vainilla</h3>
-                <p class="menu-item-descripcion">Esponjoso pastel de vainilla con relleno de frutas y crema batida.</p>
-                <h2 class="menu-item-precio">$180</h2>
-                <button class="add-to-cart">Agregar al carrito</button>
-            </div>
-            <div class="menu-item">
-                <img src="postre3.jpg" alt="Pastel de Zanahoria" class="menu-item-img">
-                <h3 class="menu-item-titulo">Pastel de Zanahoria</h3>
-                <p class="menu-item-descripcion">Jugoso pastel de zanahoria con relleno de nueces y crema de queso.</p>
-                <h2 class="menu-item-precio">$220</h2>
-                <button class="add-to-cart">Agregar al carrito</button>
-            </div>
-        </div>
-    </section>
+        <section class="menu-section" id="menu">
+            <!-- Menu items will be dynamically inserted here -->
+        </section>
 
-    <section class="menu-postres-parte2">
-        <div class="menu-item">
-            <img src="postre4.jpg" alt="Pastel de Limón" class="menu-item-img">
-            <h3 class="menu-item-titulo">Pastel de Limón</h3>
-            <p class="menu-item-descripcion">Refrescante pastel de limón con relleno de frutos rojos y crema batida.</p>
-            <h2 class="menu-item-precio">$190</h2>
-            <button class="add-to-cart">Agregar al carrito</button>
-        </div>
-        <div class="menu-item">
-            <img src="postre5.jpg" alt="Pastel de Fresa" class="menu-item-img">
-            <h3 class="menu-item-titulo">Pastel de Fresa</h3>
-            <p class="menu-item-descripcion">Dulce pastel de fresa con relleno de chocolate y crema batida.</p>
-            <h2 class="menu-item-precio">$210</h2>
-            <button class="add-to-cart">Agregar al carrito</button>
-        </div>
-        <div class="menu-item">
-            <img src="postre6.jpg" alt="Pastel de Manzana" class="menu-item-img">
-            <h3 class="menu-item-titulo">Pastel de Manzana</h3>
-            <p class="menu-item-descripcion">Delicioso pastel de manzana con relleno de caramelo y crema batida.</p>
-            <h2 class="menu-item-precio">$230</h2>
-            <button class="add-to-cart">Agregar al carrito</button>
-        </div>
-    </section>
-
-    <section class="menu-bebidas">
-        <h2 class="titulo">Nuestro Menú</h2>
-        <div class="menu-items">
-            <div class="menu-item">
-                <img src="bebida1.jpg" alt="Pastel de Chocolate" class="menu-item-img">
-                <h3 class="menu-item-titulo">Pastel de Chocolate</h3>
-                <p class="menu-item-descripcion">Delicioso pastel de chocolate con relleno de fresas y crema batida.</p>
-                <h2 class="menu-item-precio">$200</h2>
-                <button class="add-to-cart">Agregar al carrito</button>
+        <section class="team-section" id="team">
+            <h2>Nuestro Equipo</h2>
+            <div class="team-grid">
+                <!-- Team members will be dynamically inserted here -->
             </div>
-            <div class="menu-item">
-                <img src="bebida2.jpg" alt="Pastel de Vainilla" class="menu-item-img">
-                <h3 class="menu-item-titulo">Pastel de Vainilla</h3>
-                <p class="menu-item-descripcion">Esponjoso pastel de vainilla con relleno de frutas y crema batida.</p>
-                <h2 class="menu-item-precio">$180</h2>
-                <button class="add-to-cart">Agregar al carrito</button>
+        </section>
+    </main>
+
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <h2>Tu Carrito</h2>
+            <button class="close-cart" aria-label="Cerrar carrito">&times;</button>
+            <div class="cart-items">
+                <!-- Cart items will be dynamically inserted here -->
             </div>
-            <div class="menu-item">
-                <img src="bebida3.jpg" alt="Pastel de Zanahoria" class="menu-item-img">
-                <h3 class="menu-item-titulo">Pastel de Zanahoria</h3>
-                <p class="menu-item-descripcion">Jugoso pastel de zanahoria con relleno de nueces y crema de queso.</p>
-                <h2 class="menu-item-precio">$220</h2>
-                <button class="add-to-cart">Agregar al carrito</button>
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
             </div>
+            <button class="checkout-btn" id="checkoutBtn">Realizar Pedido</button>
         </div>
-    </section>
-</div>
+    </div>
 
-<div id='carrito' style="display: none;">
-    <h2>Carrito de Compras</h2>
-    <ul id='lista-carrito'></ul> 
-    <p id='total'>Total: $0.00</p> 
-    <button id='enviar-pedido'>Enviar Pedido</button> 
-    <button id='ocultar-carrito'>Ocultar Carrito</button>
-</div>
-
-<!-- Botón para mostrar el carrito -->
-<button id='mostrar-carrito'>Mostrar Carrito</button>
-
-    <footer>
-        <div class="footer">
-            <div class="footer-logo">
-                <img src="logo.png" alt="Logo Pasteleria" class="logo">
-            </div>
-            <div class="footer-contacto">
-                <h2 class="footer-titulo">Contacto Llamen a manuel</h2>
-                <p class="footer-texto">Dirección: Busquelo con encuentrelo</p>
-                <p class="footer-texto">Teléfono: ¿pa que lo quiere?</p>
-                <p class="footer-texto">Correo: elabusamadres@gmail.com
-    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
 
