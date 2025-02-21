@@ -1,0 +1,217 @@
+.body {
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.fondoInicio {
+    background-image: url(fondo1.png);
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.header {
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: space-between; 
+    width: 100%;
+    padding: 20px;
+}
+
+.logo {
+    width: 100px;
+    height: auto; 
+}
+
+.menu-navegacion {
+    display: flex;
+    align-items:  center;
+    justify-content: center;
+}
+
+.menu-items {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-items li {
+    margin-left: 20px;
+}
+
+.menu-items a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    padding: 10px 15px;
+}
+
+.menu-items a:hover {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+.presentacion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+    padding: 5%;
+    padding-left: 18%;
+}
+
+.menu{
+    padding-top: 20%;
+}
+
+.menu-postres-parte1,
+.menu-postres-parte2,
+.menu-entradas,
+.menu-bebidas { 
+    padding-top:10%;
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: space-between;
+    
+}
+
+.menu-bebidas {
+    padding-bottom: 10%;
+}
+.titulo {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    text-align: center;
+    width: 100%;
+}
+
+.menu-item {
+    width: calc(33.333% - 20px); 
+    margin-bottom: 20px; 
+    justify-content: center;
+}
+
+.menu-item-precio {
+    width: calc(33.333% - 20px); 
+    margin-bottom: 20px; 
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
+
+
+.menu-item img { 
+    width: 50%;
+    height: 50%; 
+    border-radius: 10px; 
+    transition: border-color 0.3s; 
+    padding: 10%;
+    display: block;/*No se que hace pero deja la imagen en el centro*/
+    margin: 0 auto;
+}
+
+.menu-item:hover img {
+    border-color: black; 
+    border-width: 2px; 
+    border-style: solid; 
+}
+
+.menu-item h3,
+.menu-item p { 
+   text-align:center; 
+}
+
+.add-to-cart {
+    background-color: #fde5ea;
+    color: #333333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer {
+    background-color: #fde5ea;
+    color: #333333;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+
+@media (max-width: 768px) {
+   .menu-item { 
+       width: calc(50% - 20px);  
+   }
+}
+
+@media (max-width: 480px) {
+   .menu-item { 
+       width: calc(100% - 20px); 
+   }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .fondoInicio {
+        background-size: contain;
+        height: auto;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .body {
+        font-size: 14px;
+    }
+
+    .fondoInicio {
+        flex-direction: column;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .presentacion{
+        padding: 10%;
+        padding-left: 5%;
+        text-align: left;
+    }
+}
+
+@media (max-width: 480px) {
+    .presentacion{
+        padding: 5%;
+        padding-left: 2%;
+        text-align: left;
+    }
+}
