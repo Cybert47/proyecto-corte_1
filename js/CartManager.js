@@ -1,3 +1,5 @@
+// managers/CartManager.js - Gestor del carrito
+import { CONFIG } from "./config.js"
 import { UI } from "./UI.js"
 
 class CartManager {
@@ -169,7 +171,6 @@ class CartManager {
       return
     }
 
-    // AQUÍ SE GENERA EL RESUMEN DEL PEDIDO CON LA LISTA DE PRODUCTOS
     orderSummary.innerHTML = this.items
       .map(
         (item) => `
@@ -187,12 +188,9 @@ class CartManager {
     }
   }
 
-  // AQUÍ SE UTILIZA ASYNC/AWAIT Y FETCH PARA ENVIAR LOS DATOS DEL PEDIDO AL SERVIDOR
-  // Esta función envía los datos del pedido mediante una solicitud POST con formato JSON
   async submitOrder(e) {
     e.preventDefault()
 
-    // AQUÍ SE OBTIENEN LOS DATOS DEL FORMULARIO
     const customerName = document.getElementById("customerName")?.value || ""
     const customerPhone = document.getElementById("customerPhone")?.value || ""
     const customerAddress = document.getElementById("customerAddress")?.value || ""
@@ -202,18 +200,18 @@ class CartManager {
       return
     }
 
-    // AQUÍ SE CREA LA ESTRUCTURA JSON DEL PEDIDO CON NOMBRE, TELÉFONO, DIRECCIÓN Y LISTA DE PRODUCTOS
+    // Preparar los datos del pedido para enviar a Google Sheets
     const orderData = {
-      customerName, // Nombre del cliente
-      customerPhone, // Teléfono del cliente
-      customerAddress, // Dirección del cliente
+      customerName,
+      customerPhone,
+      customerAddress,
       products: this.items.map((item) => ({
-        // Lista de productos como un arreglo
-        id: item.id, // ID del producto
-        price: item.price, // Precio del producto
-        quantity: item.quantity, // Cantidad del producto
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
       })),
-      totalAmount: this.calculateTotal(), // Monto total del pedido
+      totalAmount: this.calculateTotal(),
     }
 
     try {
@@ -223,44 +221,97 @@ class CartManager {
         confirmButton.disabled = true
       }
 
-      // AQUÍ SE SIMULA EL ENVÍO DE DATOS MEDIANTE FETCH CON MÉTODO POST Y DATOS JSON
-      // En una implementación real, se usaría fetch para enviar los datos al servidor
-      console.log("Datos del pedido que se enviarían:", orderData)
+      console.log("Enviando datos del pedido:", orderData)
 
-      // Simulamos una respuesta exitosa después de 1 segundo
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      // AQUÍ NORMALMENTE SE USARÍA FETCH PARA ENVIAR LOS DATOS AL SERVIDOR:
-      /*
+      // Enviar los datos a Google Sheets a través del Apps Script
       const response = await fetch(CONFIG.ORDER_URL, {
-        method: 'POST',  // Método HTTP POST
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'  // Tipo de contenido JSON
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(orderData)  // Datos codificados como JSON
-      });
-      
-      const result = await response.json();  // Procesar la respuesta JSON
-      */
+        body: JSON.stringify(orderData),
+      })
 
-      // Simulamos una respuesta exitosa
-      const result = { success: true, message: "Pedido recibido correctamente" }
+      // Verificar si la respuesta es exitosa
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`)
+      }
 
-      UI.showNotification("¡Gracias por tu pedido! Será procesado en breve.")
+      const result = await response.json()
+      console.log("Respuesta del servidor:", result)
 
-      this.items = []
-      this.update()
-      document.getElementById("orderForm")?.reset()
-      this.hideCheckoutForm()
+      if (result.success) {
+        UI.showNotification("¡Gracias por tu pedido! Será procesado en breve.")
+
+        // Limpiar el carrito y el formulario
+        this.items = []
+        this.update()
+        document.getElementById("orderForm")?.reset()
+        this.hideCheckoutForm()
+      } else {
+        throw new Error(result.message || "Error al procesar el pedido")
+      }
     } catch (error) {
       console.error("Error al enviar el pedido:", error)
-      UI.showNotification("Error al procesar el pedido. Intente nuevamente.")
+
+      // Si hay un error CORS, intentar con un enfoque alternativo
+      if (error.message.includes("CORS") || error.name === "TypeError") {
+        this.submitOrderAlternative(orderData)
+      } else {
+        UI.showNotification("Error al procesar el pedido. Intente nuevamente.")
+      }
     } finally {
       const confirmButton = document.getElementById("confirmOrder")
       if (confirmButton) {
         confirmButton.textContent = "Confirmar Pedido"
         confirmButton.disabled = false
       }
+    }
+  }
+
+  // Método alternativo para enviar pedidos si hay problemas de CORS
+  submitOrderAlternative(orderData) {
+    try {
+      console.log("Usando método alternativo para enviar pedido")
+
+      // Crear un iframe oculto para enviar el formulario
+      const iframe = document.createElement("iframe")
+      iframe.name = "hidden-iframe"
+      iframe.style.display = "none"
+      document.body.appendChild(iframe)
+
+      // Crear un formulario para enviar los datos
+      const form = document.createElement("form")
+      form.method = "POST"
+      form.action = CONFIG.ORDER_URL
+      form.target = "hidden-iframe"
+
+      // Añadir los datos como campos ocultos
+      const dataField = document.createElement("input")
+      dataField.type = "hidden"
+      dataField.name = "data"
+      dataField.value = JSON.stringify(orderData)
+      form.appendChild(dataField)
+
+      // Añadir el formulario al documento y enviarlo
+      document.body.appendChild(form)
+      form.submit()
+
+      // Limpiar después de enviar
+      setTimeout(() => {
+        document.body.removeChild(form)
+        document.body.removeChild(iframe)
+      }, 1000)
+
+      // Mostrar mensaje de éxito y limpiar carrito
+      UI.showNotification("¡Gracias por tu pedido! Será procesado en breve.")
+      this.items = []
+      this.update()
+      document.getElementById("orderForm")?.reset()
+      this.hideCheckoutForm()
+    } catch (error) {
+      console.error("Error en método alternativo:", error)
+      UI.showNotification("Error al procesar el pedido. Intente nuevamente.")
     }
   }
 }
