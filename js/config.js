@@ -1,9 +1,9 @@
-// config.js - Configuraciones y constantes
+//  Configuraciones y constantes
 const CONFIG = {
   MENU_URL:
-    "https://script.google.com/macros/s/AKfycbzCfzAZ5E_HN3Geay6OGztqRi6Una9ZTeo3Rp5Epv5jV_5wZiundgbmYTjldXJwV-2f/exec",
+    "https://script.google.com/macros/s/AKfycbxlUDs3QXpveCkhzvXDowUXFfiMPQef3U3MijRL-7hQp4OAB8aMHe-FgynFcqep0-D8/exec",
   ORDER_URL:
-    "https://script.google.com/macros/s/AKfycbzCfzAZ5E_HN3Geay6OGztqRi6Una9ZTeo3Rp5Epv5jV_5wZiundgbmYTjldXJwV-2f/exec",
+    "https://script.google.com/macros/s/AKfycbxlUDs3QXpveCkhzvXDowUXFfiMPQef3U3MijRL-7hQp4OAB8aMHe-FgynFcqep0-D8/exec",
   CATEGORIES: ["starters", "main", "drinks", "desserts"],
   DEFAULT_CATEGORY: "desserts",
 }
