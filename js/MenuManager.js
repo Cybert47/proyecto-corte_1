@@ -1,4 +1,4 @@
-// managers/MenuManager.js - Gestor del menú
+// - Gestor del menú
 import { CONFIG } from "./config.js"
 
 class MenuManager {

@@ -1,4 +1,4 @@
-// main.js - Punto de entrada de la aplicación
+//  Punto de entrada de la aplicación
 import { App } from '././app.js';
 
 // Iniciar la aplicación cuando el DOM esté listo

@@ -1,4 +1,4 @@
-// data.js - Datos de la aplicación
+// - Datos de la aplicación
 const TEAM_DATA = [
   {
     name: "Amy jeanine Nossa",
