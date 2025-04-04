@@ -1,100 +1,8 @@
-// datos del menu
-const menuData = {
-    starters: [
-        {
-            "id": 1,
-            "name": "Mini Éclairs",
-            "description": "Pequeños éclairs rellenos de crema pastelera y cubiertos con chocolate",
-            "price": 5.99,
-            "image": "Mini-Eclairs.jpg"
-          },
-          {
-            "id": 2,
-            "name": "Palmiers",
-            "description": "Crujientes hojaldres en forma de corazón con azúcar caramelizado",
-            "price": 4.99,
-            "image": "palmiers.jpg"
-          },
-          {
-            "id": 3,
-            "name": "Madeleines",
-            "description": "Bizcochos esponjosos con un toque de limón y mantequilla",
-            "price": 6.49,
-            "image": "Madeleines.jpg"
-          },
-      
-    ],
-    main: [
-        {
-            "id": 5,
-            "name": "Tarta de Chocolate y Avellanas",
-            "description": "Tarta húmeda de chocolate con crema de avellanas y cobertura de ganache",
-            "price": 12.99,
-            "image": "torta.jpg"
-          },
-          {
-            "id": 6,
-            "name": "Milhojas de Crema y Frutas",
-            "description": "Crujiente hojaldre en capas con crema pastelera y frutas frescas",
-            "price": 10.99,
-            "image": "milhojas.jpg"
-          },
-          {
-            "id": 7,
-            "name": "Cheesecake de Frutos Rojos",
-            "description": "Suave cheesecake horneado con base de galleta y topping de frutos rojos",
-            "price": 11.49,
-            "image": "Cheesecake.jpg"
-          },
-    ],
-    drinks: [
-      {
-        id: 8,
-        name: "Chocolate Caliente",
-        description: "Chocolate caliente con crema batida y chocolate",
-        price: 5.99,
-        image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bebida1.jpg-cxHLofRvyG8RfNmcBaghJ7w5ptw8S6.jpeg",
-      },
-      {
-        id: 9,
-        name: "Café con Crema",
-        description: "Café especial con crema batida y canela",
-        price: 4.99,
-        image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bebida2.jpg-GeCg2QAn59gM0prKAHEMFuCzjR3a5M.jpeg",
-      },
-      {
-        id: 10,
-        name: "Cappuccino",
-        description: "Cappuccino italiano con espuma cremosa",
-        price: 4.99,
-        image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bebida3.jpg-RLt9XlylxtwpvehpxB4WwkfHteNXU6.jpeg",
-      },
-    ],
-    desserts: [
-        {
-            "id": 11,
-            "name": "Tiramisú",
-            "description": "Clásico postre italiano con capas de bizcocho de café y crema de mascarpone",
-            "price": 9.99,
-            "image": "tiramisu.jpg"
-          },
-          {
-            "id": 12,
-            "name": "Crème Brûlée",
-            "description": "Delicada crema de vainilla con una crujiente capa de caramelo",
-            "price": 8.99,
-            "image": "Creme-Brulee.jpg"
-          },
-          {
-            "id": 13,
-            "name": "Profiteroles",
-            "description": "Bocaditos de masa choux rellenos de crema y bañados en chocolate",
-            "price": 7.99,
-            "image": "Profiteroles.jpg"
-          },
-      ],
-  }
-  
+const MENU_URL = "https://script.google.com/macros/s/AKfycbzQPXGvBAqRyM6zX830AK8nIXx3hQuh8CxJQ17aLGqb5sJ9V1syR0FGwW4LM1fiVNBqCA/exec"
+
+let menuData = {}
+
+
   // equipo 
   const teamData = [
     {
@@ -135,12 +43,25 @@ const menuData = {
   const checkoutBtn = document.getElementById("checkoutBtn")
   const categoryButtons = document.querySelectorAll(".category-btn")
   
-  // inicializador pagina
+  // Eventos DOM
   document.addEventListener("DOMContentLoaded", () => {
-    renderMenu(currentCategory)
+    fetchMenuData()
     renderTeam()
     setupEventListeners()
   })
+
+  async function fetchMenuData() {
+    try {
+      const response = await fetch(MENU_URL);
+      const data = await response.json();
+      menuData = data; 
+      renderMenu(currentCategory)
+      console.log(menuData)
+    } catch (error) {
+      console.error("Error al cargar el menú:", error);
+    }
+    setupEventListeners()
+  }
   
   // evenstos escucha
   function setupEventListeners() {
@@ -159,7 +80,7 @@ const menuData = {
   
   // renderizar funciones
   function renderMenu(category) {
-    menuSection.innerHTML = menuData[category]
+    menuSection.innerHTML = menuData[category] ? menuData[category]
       .map(
         (item) => `
           <div class="menu-item">
@@ -179,7 +100,9 @@ const menuData = {
           </div>
       `,
       )
-      .join("")
+      .join("") : '<p class="loading">cargando menú...</p>'
+
+      
   }
   
   function renderTeam() {
