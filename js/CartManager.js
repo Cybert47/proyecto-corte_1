@@ -223,25 +223,11 @@ class CartManager {
 
       console.log("Enviando datos del pedido:", orderData)
 
-      // Intentar enviar usando fetch con modo 'no-cors'
-      await this.sendOrderWithFetch(orderData)
+      // Usar el método de iframe que es más confiable para Google Apps Script
+      this.submitOrderWithIframe(orderData)
 
-      // Si llegamos aquí, asumimos que la solicitud se envió correctamente
-      UI.showNotification("¡Gracias por tu pedido! Será procesado en breve.")
-
-      // Limpiar carrito y formulario
-      this.items = []
-      this.update()
-      document.getElementById("orderForm")?.reset()
-      this.hideCheckoutForm()
-    } catch (error) {
-      console.error("Error al enviar el pedido:", error)
-
-      // Intentar con el método alternativo si fetch falla
-      try {
-        await this.sendOrderWithProxy(orderData)
-
-        // Si el método alternativo tiene éxito
+      // No esperamos una respuesta, asumimos éxito después de un tiempo
+      setTimeout(() => {
         UI.showNotification("¡Gracias por tu pedido! Será procesado en breve.")
 
         // Limpiar carrito y formulario
@@ -249,11 +235,17 @@ class CartManager {
         this.update()
         document.getElementById("orderForm")?.reset()
         this.hideCheckoutForm()
-      } catch (proxyError) {
-        console.error("Error en método alternativo:", proxyError)
-        UI.showNotification("Error al procesar el pedido. Intente nuevamente.")
-      }
-    } finally {
+
+        const confirmButton = document.getElementById("confirmOrder")
+        if (confirmButton) {
+          confirmButton.textContent = "Confirmar Pedido"
+          confirmButton.disabled = false
+        }
+      }, 2000)
+    } catch (error) {
+      console.error("Error al enviar el pedido:", error)
+      UI.showNotification("Error al procesar el pedido. Intente nuevamente.")
+
       const confirmButton = document.getElementById("confirmOrder")
       if (confirmButton) {
         confirmButton.textContent = "Confirmar Pedido"
@@ -262,51 +254,61 @@ class CartManager {
     }
   }
 
-  // Método para enviar usando fetch con modo 'no-cors'
-  async sendOrderWithFetch(orderData) {
-    // Convertir los datos a formato URL-encoded para que funcione con no-cors
-    const formData = new URLSearchParams()
-    formData.append("data", JSON.stringify(orderData))
+  // Método que usa un iframe para enviar el formulario (evita CORS)
+  submitOrderWithIframe(orderData) {
+    console.log("Enviando pedido mediante iframe")
 
-    const response = await fetch(CONFIG.ORDER_URL, {
-      method: "POST",
-      mode: "no-cors", // Esto permite que la solicitud se envíe sin verificar CORS
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: formData,
-    })
+    // Crear un iframe oculto
+    const iframeId = "hidden-submit-iframe"
+    let iframe = document.getElementById(iframeId)
 
-    // Con modo 'no-cors', no podemos leer la respuesta,
-    // pero al menos la solicitud se envía sin errores CORS
-    console.log("Solicitud enviada en modo no-cors")
-
-    // Devolvemos una promesa resuelta ya que no podemos verificar el estado real
-    return Promise.resolve({ success: true })
-  }
-
-  // Método alternativo usando un proxy CORS
-  async sendOrderWithProxy(orderData) {
-    // Usamos un servicio de proxy CORS público
-    const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(CONFIG.ORDER_URL)
-
-    const formData = new URLSearchParams()
-    formData.append("data", JSON.stringify(orderData))
-
-    const response = await fetch(proxyUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: formData,
-    })
-
-    if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`)
+    if (!iframe) {
+      iframe = document.createElement("iframe")
+      iframe.id = iframeId
+      iframe.name = iframeId
+      iframe.style.display = "none"
+      document.body.appendChild(iframe)
     }
 
-    return await response.json()
+    // Crear un formulario para enviar los datos
+    const formId = "hidden-submit-form"
+    let form = document.getElementById(formId)
+
+    if (!form) {
+      form = document.createElement("form")
+      form.id = formId
+      form.style.display = "none"
+      document.body.appendChild(form)
+    }
+
+    // Configurar el formulario
+    form.method = "POST"
+    form.action = CONFIG.ORDER_URL
+    form.target = iframeId
+    form.innerHTML = "" // Limpiar el formulario
+
+    // Añadir los datos como campos individuales para que coincidan con lo que espera el script
+    const addField = (name, value) => {
+      const field = document.createElement("input")
+      field.type = "hidden"
+      field.name = name
+      field.value = value
+      form.appendChild(field)
+    }
+
+    // Añadir los campos principales
+    addField("customerName", orderData.customerName)
+    addField("customerPhone", orderData.customerPhone)
+    addField("customerAddress", orderData.customerAddress)
+    addField("totalAmount", orderData.totalAmount.toString())
+
+    // Añadir los productos como JSON
+    addField("products", JSON.stringify(orderData.products))
+
+    // Enviar el formulario
+    form.submit()
+
+    console.log("Formulario enviado a través de iframe")
   }
 }
 
