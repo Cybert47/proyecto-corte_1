@@ -1,4 +1,4 @@
-// utils/UI.js - Utilidades para la interfaz de usuario
+//  - Utilidades para la interfaz de usuario
 class UI {
   static showNotification(message) {
     const notification = document.createElement("div");

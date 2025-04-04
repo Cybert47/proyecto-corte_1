@@ -1,4 +1,4 @@
-// managers/CartManager.js - Gestor del carrito
+//  - Gestor del carrito
 import { CONFIG } from "./config.js"
 import { UI } from "./UI.js"
 
@@ -256,7 +256,7 @@ class CartManager {
 
   // Método que usa un iframe para enviar el formulario (evita CORS)
   submitOrderWithIframe(orderData) {
-    console.log("Enviando pedido mediante iframe")
+    console.log("Enviando pedido correcto!")
 
     // Crear un iframe oculto
     const iframeId = "hidden-submit-iframe"

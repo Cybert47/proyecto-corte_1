@@ -1,4 +1,4 @@
-// managers/TeamManager.js - Gestor del equipo
+//  - Gestor del equipo
 class TeamManager {
   constructor(data) {
     this.data = data;
